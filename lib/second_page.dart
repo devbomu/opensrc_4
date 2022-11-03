@@ -1,22 +1,42 @@
 import 'package:flutter/material.dart';
 import 'student.dart';
+import 'counter.dart';
+import 'package:provider/provider.dart';
 
 class SecondPage extends StatelessWidget {
+  var cnt;
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)!.settings.arguments as Student;
-    print('in SecondPage: ${args.name}');
+    cnt = Provider.of<Counter>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Second'),
       ),
-      body: ElevatedButton(
-        child: const Text('Previous Page'),
-        onPressed: (){
-          final args_sec = Student('Dong-Soo', 33, 20222222);
-          Navigator.pop(context, args_sec);
-        },
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Center(
+            child: ElevatedButton(
+              child: Text('Previous Page'),
+              onPressed: () {
+                Navigator.pop(context,);
+              },
+            ),
+          ),
+          Consumer<Counter>(
+            builder: (context, counter, child){
+              return Text('${counter.number}');
+            },
+          ),
+        ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+          cnt.add();
+        },
+        child: Icon(Icons.add),
+        backgroundColor: Colors.blue,
+      )
     );
   }
 }
